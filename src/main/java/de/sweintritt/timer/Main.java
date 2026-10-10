@@ -33,7 +33,7 @@ public class Main {
             }
         });
         var in = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Timer. Commands: add <name> <time>h|m, list, stop <name|all>, quit");
+        System.out.println("Timer. Type 'help' for available commands.");
         while (!processor.shouldQuit()) {
             synchronized (lock) {
                 System.out.print(PROMPT);

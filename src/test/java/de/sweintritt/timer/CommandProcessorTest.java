@@ -61,6 +61,18 @@ class CommandProcessorTest {
     }
 
     @Test
+    void helpListsCommandsWithParametersAndDescriptions() {
+        cmd.execute("help");
+        assertEquals(List.of(
+                "Available commands:",
+                "  add <name> <time><unit> - Add a timer (units: h, m)",
+                "  list - List running timers",
+                "  stop <name> | stop all - Stop one timer or all timers",
+                "  help - Show available commands",
+                "  quit - Quit when no timers are running"), out);
+    }
+
+    @Test
     void invalidUnitsAndTimes() {
         for (String t : new String[] {"3s", "3", "m", "abc", "0m", "-1m", "99999999999999999999m", "9223372036854775807h"}) {
             out.clear();

@@ -23,6 +23,7 @@ Enter commands at the `>` prompt.
 | `list` | List running timers with name and the duration given to `add`. |
 | `stop <name>` | Stop the timer with the given name. |
 | `stop all` | Stop all timers. |
+| `help` | List available commands with their parameters and descriptions. |
 | `quit` | Quit. Refused (running timers are printed) while timers are running; use `stop` first. |
 
 Invalid commands, missing/unsupported units, duplicate names and unknown timer names print an error message.
