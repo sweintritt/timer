@@ -83,6 +83,12 @@ class CommandProcessorTest {
     }
 
     @Test
+    void blankCommandIsIgnored() {
+        cmd.execute("  ");
+        assertTrue(out.isEmpty());
+    }
+
+    @Test
     void addUsageError() {
         cmd.execute("add tee");
         assertTrue(last().startsWith("Error"));
@@ -112,6 +118,12 @@ class CommandProcessorTest {
         assertTrue(last().startsWith("Error"));
         cmd.execute("stop all");
         assertTrue(manager.isEmpty());
+    }
+
+    @Test
+    void stopRequiresOneArgument() {
+        cmd.execute("stop");
+        assertEquals("Error: usage: stop <name> | stop all", last());
     }
 
     @Test
