@@ -51,7 +51,7 @@ class CommandProcessorTest {
         cmd.execute("add check-server 1h");
         out.clear();
         cmd.execute("list");
-        assertEquals(List.of("tee (3m)", "check-server (1h)"), out);
+        assertEquals(List.of(" - tee - 00:03 remaining", " - check-server - 01:00 remaining"), out);
     }
 
     @Test

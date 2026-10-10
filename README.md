@@ -20,7 +20,7 @@ Enter commands at the `>` prompt.
 | Command | Description |
 |---|---|
 | `add <name> <time><unit>` | Add a timer, e.g. `add tee 3m`, `add check-server 1h`. Units: `h`, `m`. Names must be unique. |
-| `list` | List running timers with name and the duration given to `add`. |
+| `list` | List running timers with their remaining time in hours and minutes. |
 | `stop <name>` | Stop the timer with the given name. |
 | `stop all` | Stop all timers. |
 | `help` | List available commands with their parameters and descriptions. |
