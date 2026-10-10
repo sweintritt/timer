@@ -2,6 +2,7 @@ package de.sweintritt.timer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -16,6 +17,10 @@ public class Main {
             t.setDaemon(true);
             return t;
         });
+        run(System.in, scheduler);
+    }
+
+    static void run(InputStream input, ScheduledExecutorService scheduler) throws IOException {
         Object lock = new Object();
         var manager = new TimerManager(scheduler, Alarm.beep(), msg -> {
             synchronized (lock) {
@@ -32,7 +37,7 @@ public class Main {
                 System.out.println(msg);
             }
         });
-        var in = new BufferedReader(new InputStreamReader(System.in));
+        var in = new BufferedReader(new InputStreamReader(input));
         System.out.println("Timer. Type 'help' for available commands.");
         while (!processor.shouldQuit()) {
             synchronized (lock) {
