@@ -30,9 +30,19 @@ public class CommandProcessor {
             case "add" -> add(parts);
             case "list" -> list();
             case "stop" -> stop(parts);
+            case "help" -> help();
             case "quit" -> quit();
-            default -> output.accept("Error: unknown command '" + parts[0] + "'. Commands: add, list, stop, quit");
+            default -> output.accept("Error: unknown command '" + parts[0] + "'. Commands: add, list, stop, help, quit");
         }
+    }
+
+    private void help() {
+        output.accept("Available commands:");
+        output.accept("  add <name> <time><unit> - Add a timer (units: h, m)");
+        output.accept("  list - List running timers");
+        output.accept("  stop <name> | stop all - Stop one timer or all timers");
+        output.accept("  help - Show available commands");
+        output.accept("  quit - Quit when no timers are running");
     }
 
     private void add(String[] parts) {
