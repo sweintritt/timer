@@ -2,6 +2,8 @@
 
 A small console timer for keeping track of several things at once. Start a timer for your tea, a server check, or anything else, then carry on working—the app will let you know when each one is up. ☕
 
+Created with GitHub Copilot.
+
 ## See it in action
 
 ```text
