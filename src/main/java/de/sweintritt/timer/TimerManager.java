@@ -67,6 +67,20 @@ public class TimerManager {
         return result;
     }
 
+    /** Remaining timer durations as " - name - hh:mm remaining", in insertion order. */
+    public synchronized List<String> listRemaining() {
+        var result = new ArrayList<String>();
+        timers.values().forEach(t -> {
+            long remainingMillis = t.future().getDelay(TimeUnit.MILLISECONDS);
+            long remainingMinutes = Math.max(1,
+                    remainingMillis / 60_000 + (remainingMillis % 60_000 == 0 ? 0 : 1));
+            result.add(" - " + t.name() + " - "
+                    + String.format("%02d:%02d", remainingMinutes / 60, remainingMinutes % 60)
+                    + " remaining");
+        });
+        return result;
+    }
+
     public synchronized boolean isEmpty() {
         return timers.isEmpty();
     }

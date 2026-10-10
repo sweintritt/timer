@@ -94,7 +94,7 @@ public class CommandProcessor {
     }
 
     private void list() {
-        var timers = manager.list();
+        var timers = manager.listRemaining();
         if (timers.isEmpty()) {
             output.accept("No running timers");
             return;
