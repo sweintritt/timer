@@ -29,4 +29,4 @@ Enter commands at the `>` prompt.
 Invalid commands, missing/unsupported units, duplicate names and unknown timer names print an error message.
 
 ## Alarm
-When a timer ends, its name is printed, then an alarm sound (three beeps, synthesized in code, so no audio file or license is needed) is played once and the timer is removed. If no audio device is available the terminal bell is used. The prompt is redrawn after every command and every finished timer.
+When a timer ends, its name is printed, then an alarm sound (nine 980 Hz beeps, synthesized in code, so no audio file or license is needed) is played once and the timer is removed. If no audio device is available the terminal bell is used. The prompt is redrawn after every command and every finished timer.
