@@ -68,6 +68,7 @@ class CommandProcessorTest {
                 "  add <name> <time><unit> - Add a timer (units: h, m)",
                 "  list - List running timers",
                 "  stop <name> | stop all - Stop one timer or all timers",
+                "  volume [value] - Show or set alarm volume (0-100)",
                 "  help - Show available commands",
                 "  quit - Quit when no timers are running"), out);
     }
@@ -106,6 +107,30 @@ class CommandProcessorTest {
     void unknownCommand() {
         cmd.execute("foo");
         assertTrue(last().startsWith("Error"));
+    }
+
+    @Test
+    void volumeCanBeReadAndSetWithinBounds() {
+        cmd.execute("volume");
+        assertEquals("Volume: 100", last());
+        cmd.execute("volume 0");
+        assertEquals("Volume set to 0", last());
+        cmd.execute("volume");
+        assertEquals("Volume: 0", last());
+        cmd.execute("volume 100");
+        assertEquals("Volume set to 100", last());
+    }
+
+    @Test
+    void invalidVolumeDoesNotChangeSetting() {
+        for (String value : new String[] {"-1", "101", "quiet", "1.5"}) {
+            cmd.execute("volume " + value);
+            assertTrue(last().startsWith("Error"), value);
+        }
+        cmd.execute("volume 1 2");
+        assertTrue(last().startsWith("Error"));
+        cmd.execute("volume");
+        assertEquals("Volume: 100", last());
     }
 
     @Test

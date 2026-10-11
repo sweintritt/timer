@@ -22,13 +22,14 @@ public class Main {
 
     static void run(InputStream input, ScheduledExecutorService scheduler) throws IOException {
         Object lock = new Object();
-        var manager = new TimerManager(scheduler, Alarm.beep(), msg -> {
+        var volume = new AlarmVolume();
+        var manager = new TimerManager(scheduler, Alarm.beep(volume), msg -> {
             synchronized (lock) {
                 System.out.println("\r" + msg);
             }
         }, () -> {
             synchronized (lock) {
-                System.out.print(PROMPT);
+                System.out.print(prompt(volume));
                 System.out.flush();
             }
         });
@@ -36,12 +37,12 @@ public class Main {
             synchronized (lock) {
                 System.out.println(msg);
             }
-        });
+        }, volume);
         var in = new BufferedReader(new InputStreamReader(input));
         System.out.println("Timer. Type 'help' for available commands.");
         while (!processor.shouldQuit()) {
             synchronized (lock) {
-                System.out.print(PROMPT);
+                System.out.print(prompt(volume));
                 System.out.flush();
             }
             String line = in.readLine();
@@ -51,5 +52,9 @@ public class Main {
             processor.execute(line);
         }
         scheduler.shutdownNow();
+    }
+
+    private static String prompt(AlarmVolume volume) {
+        return volume.get() == 0 ? "silent > " : PROMPT;
     }
 }
