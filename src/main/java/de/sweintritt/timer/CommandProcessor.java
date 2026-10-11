@@ -10,11 +10,17 @@ public class CommandProcessor {
 
     private final TimerManager manager;
     private final java.util.function.Consumer<String> output;
+    private final AlarmVolume volume;
     private boolean quit;
 
     public CommandProcessor(TimerManager manager, java.util.function.Consumer<String> output) {
+        this(manager, output, new AlarmVolume());
+    }
+
+    public CommandProcessor(TimerManager manager, java.util.function.Consumer<String> output, AlarmVolume volume) {
         this.manager = manager;
         this.output = output;
+        this.volume = volume;
     }
 
     public boolean shouldQuit() {
@@ -30,9 +36,11 @@ public class CommandProcessor {
             case "add" -> add(parts);
             case "list" -> list();
             case "stop" -> stop(parts);
+            case "volume" -> volume(parts);
             case "help" -> help();
             case "quit" -> quit();
-            default -> output.accept("Error: unknown command '" + parts[0] + "'. Commands: add, list, stop, help, quit");
+            default -> output.accept("Error: unknown command '" + parts[0]
+                    + "'. Commands: add, list, stop, volume, help, quit");
         }
     }
 
@@ -41,6 +49,7 @@ public class CommandProcessor {
         output.accept("  add <name> <time><unit> - Add a timer (units: h, m)");
         output.accept("  list - List running timers");
         output.accept("  stop <name> | stop all - Stop one timer or all timers");
+        output.accept("  volume [value] - Show or set alarm volume (0-100)");
         output.accept("  help - Show available commands");
         output.accept("  quit - Quit when no timers are running");
     }
@@ -115,6 +124,30 @@ public class CommandProcessor {
         } else {
             output.accept("Error: no timer named '" + parts[1] + "'");
         }
+    }
+
+    private void volume(String[] parts) {
+        if (parts.length == 1) {
+            output.accept("Volume: " + volume.get());
+            return;
+        }
+        if (parts.length != 2) {
+            output.accept("Error: usage: volume [value]");
+            return;
+        }
+        int value;
+        try {
+            value = Integer.parseInt(parts[1]);
+        } catch (NumberFormatException e) {
+            output.accept("Error: volume must be an integer between 0 and 100");
+            return;
+        }
+        if (value < 0 || value > 100) {
+            output.accept("Error: volume must be between 0 and 100");
+            return;
+        }
+        volume.set(value);
+        output.accept("Volume set to " + value);
     }
 
     private void quit() {

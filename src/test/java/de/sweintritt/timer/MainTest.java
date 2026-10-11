@@ -25,6 +25,11 @@ class MainTest {
     }
 
     @Test
+    void displaysSilentPromptAtZeroVolume() throws IOException {
+        assertTrue(runMain("volume 0\nquit\n").contains("silent > "));
+    }
+
+    @Test
     void handlesTimerExpiryWhileWaitingForInput() throws IOException {
         var scheduler = new ScheduledThreadPoolExecutor(1) {
             @Override

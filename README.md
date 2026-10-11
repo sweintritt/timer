@@ -47,10 +47,12 @@ Enter commands at the `>` prompt.
 | `list` | List running timers with their remaining time in hours and minutes. |
 | `stop <name>` | Stop the timer with the given name. |
 | `stop all` | Stop all timers. |
+| `volume` | Show the alarm volume (0-100). |
+| `volume <value>` | Set the alarm volume (0 is silent; 100 is maximum). |
 | `help` | List available commands with their parameters and descriptions. |
 | `quit` | Quit. Refused (running timers are printed) while timers are running; use `stop` first. |
 
 Invalid commands, missing/unsupported units, duplicate names and unknown timer names print an error message.
 
 ## 🔔 Alarm
-When a timer ends, its name is printed, then an alarm sound (nine 980 Hz beeps, synthesized in code, so no audio file or license is needed) is played once and the timer is removed. If no audio device is available the terminal bell is used. The prompt is redrawn after every command and every finished timer.
+When a timer ends, its name is printed, then an alarm sound (nine 980 Hz beeps, synthesized in code, so no audio file or license is needed) is played once at the configured volume and the timer is removed. If no audio device is available the terminal bell is used. At volume zero, the prompt displays `silent >`. The prompt is redrawn after every command and every finished timer.

@@ -2,8 +2,11 @@ package de.sweintritt.timer;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import org.junit.jupiter.api.Test;
 
 class AlarmTest {
@@ -34,8 +37,37 @@ class AlarmTest {
     }
 
     @Test
+    void volumeScalesSamplesAndZeroIsSilent() {
+        float rate = 44100f;
+        byte[] full = AlarmSound.create(rate, 100);
+        byte[] half = AlarmSound.create(rate, 50);
+        byte[] silent = AlarmSound.create(rate, 0);
+        int sampleIndex = (int) (0.125 * rate) * 2;
+
+        assertEquals(sample(full, sampleIndex) / 2, sample(half, sampleIndex));
+        for (byte value : silent) {
+            assertEquals(0, value);
+        }
+    }
+
+    @Test
     void beepPlaysOrFallsBackWhenAudioIsUnavailable() {
         assertDoesNotThrow(Alarm.beep()::play);
+    }
+
+    @Test
+    void silentAlarmDoesNotUseTerminalBellFallback() {
+        var originalOutput = System.out;
+        var output = new ByteArrayOutputStream();
+        var volume = new AlarmVolume();
+        volume.set(0);
+        try {
+            System.setOut(new PrintStream(output));
+            Alarm.beep(volume).play();
+        } finally {
+            System.setOut(originalOutput);
+        }
+        assertFalse(output.toString().contains("\007"));
     }
 
     private short sample(byte[] sound, int byteIndex) {
